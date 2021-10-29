@@ -31,6 +31,8 @@
         </h1></a
       >
 
+      <% filteredBooks.forEach(book => { %>
+
       <form action="" method="POST" class="mt-4">
         <div class="row">
           <div class="col-md-6">
@@ -41,6 +43,7 @@
                 class="form-control"
                 id="BookName"
                 name="BookName"
+                value="<%= book.BookName %>"
               />
             </div>
           </div>
@@ -52,11 +55,12 @@
                 class="form-control"
                 id="Author"
                 name="Author"
+                value="<%= book.Author %>"
               />
             </div>
           </div>
         </div>
-
+        <!-- <p><%= book.ReadStartDate.toISOString() %></p> -->
         <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
@@ -68,6 +72,7 @@
                 class="form-control"
                 id="ReadStartDate"
                 name="ReadStartDate"
+                value="<%= book.ReadStartDate %>"
               />
             </div>
           </div>
@@ -81,6 +86,7 @@
                 class="form-control"
                 id="CompletedDate"
                 name="CompletedDate"
+                value="<%= book.CompletedDate %>"
               />
             </div>
           </div>
@@ -92,6 +98,7 @@
             class="form-check-input"
             name="Completed"
             id="Completed"
+            value="<%= book.Completed == 'on' ? true : false %>"
             onclick="ToggleCompletedDate()"
           />
           <label
@@ -105,40 +112,7 @@
         <button type="submit" class="btn btn-primary">Add Book</button>
       </form>
 
-      <table class="table table-striped mt-2">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Book Name</th>
-            <th scope="col">Author</th>
-            <th scope="col">Read Start Date</th>
-            <th scope="col">Completed Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% books.forEach((book, index) => { %>
-          <tr onclick='Edit("<%= book.BookName%>")'>
-            <th><%= (index+1) %></th>
-            <td><%= book.BookName %></td>
-            <td><%= book.Author %></td>
-
-            <% if(book.ReadStartDate != null || book.ReadStartDate != undefined)
-            { %>
-            <td><%= book.ReadStartDate.toLocaleString().replace(",", "") %></td>
-            <% } else { %>
-            <td></td>
-            <% } %> <% if(book.Completed) { %> <% if(book.CompletedDate != null
-            || book.CompletedDate != undefined) { %>
-            <td><%= book.CompletedDate.toLocaleString().replace(",", "") %></td>
-            <% } else { %>
-            <td></td>
-            <% } %> <% } else { %>
-            <td></td>
-            <% } %>
-          </tr>
-          <% }) %>
-        </tbody>
-      </table>
+      <% }) %>
     </div>
 
     <script>
@@ -148,10 +122,10 @@
         else document.querySelector("#completedDateDiv").style.display = "none";
       }
 
-      function Edit(bookName) {
-        bookName.replace(" ", "+");
-        window.location.replace("/edit/" + bookName);
-      }
+      // window.onload = () => {
+      //   console.log(this.filterBooks);
+      //   console.log(filterBooks);
+      // }
     </script>
   </body>
 </html>

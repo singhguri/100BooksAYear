@@ -1,131 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-      crossorigin="anonymous"
-    ></script>
-    <style>
-      /* .form-control {
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+  </script>
+  <style>
+    /* .form-control {
         width: 40%;
       } */
-    </style>
-    <title>100 Books A Year</title>
-  </head>
+  </style>
+  <title>100 Books A Year</title>
+</head>
 
-  <body>
-    <div class="container">
-      <a href="/" style="color: black; text-decoration: none">
-        <h1 style="display: flex; justify-content: center">
-          100 BOOKS A YEAR
-        </h1></a
-      >
+<body>
+  <div class="container">
+    <a href="/" style="color: black; text-decoration: none">
+      <h1 style="display: flex; justify-content: center">100 BOOKS A YEAR</h1>
+    </a>
 
-      <% filteredBooks.forEach(book => { %>
+    <% filteredBooks.forEach(book => { %>
 
-      <form action="" method="POST" class="mt-4">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="BookName" class="form-label">Book Name</label>
-              <input
-                type="text"
-                class="form-control"
-                id="BookName"
-                name="BookName"
-                value="<%= book.BookName %>"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="Author" class="form-label">Author</label>
-              <input
-                type="Author"
-                class="form-control"
-                id="Author"
-                name="Author"
-                value="<%= book.Author %>"
-              />
-            </div>
+    <form action="" method="POST" class="mt-4" id="UpdateForm">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="BookName" class="form-label">Book Name</label>
+            <input disabled style="cursor: not-allowed" type="text" class="form-control" id="BookName" name="BookName"
+              value="<%= book.BookName %>" />
           </div>
         </div>
-        <!-- <p><%= book.ReadStartDate.toISOString() %></p> -->
-        <div class="row">
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label for="ReadStartDate" class="form-label"
-                >Read Start Date</label
-              >
-              <input
-                type="datetime-local"
-                class="form-control"
-                id="ReadStartDate"
-                name="ReadStartDate"
-                value="<%= book.ReadStartDate %>"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3" id="completedDateDiv" style="display: none">
-              <label for="CompletedDate" class="form-label"
-                >Completed Date</label
-              >
-              <input
-                type="datetime-local"
-                class="form-control"
-                id="CompletedDate"
-                name="CompletedDate"
-                value="<%= book.CompletedDate %>"
-              />
-            </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="Author" class="form-label">Author</label>
+            <input disabled style="cursor: not-allowed" type="Author" class="form-control" id="Author" name="Author"
+              value="<%= book.Author %>" />
           </div>
         </div>
+      </div>
 
-        <div class="mb-3 form-check">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            name="Completed"
-            id="Completed"
-            value="<%= book.Completed == 'on' ? true : false %>"
-            onclick="ToggleCompletedDate()"
-          />
-          <label
-            class="form-check-label"
-            for="Completed"
-            onclick="ToggleCompletedDate()"
-            >Completed</label
-          >
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="ReadStartDate" class="form-label">Read Start Date</label>
+            <input disabled style="cursor: not-allowed" type="datetime-local" class="form-control" id="ReadStartDate"
+              name="ReadStartDate" value="<%= book.ReadStartDate %>" />
+          </div>
         </div>
+        <div class="col-md-6">
+          <div class="mb-3" id="completedDateDiv" style="display: none">
+            <label for="CompletedDate" class="form-label">Completed Date</label>
+            <input type="datetime-local" class="form-control" id="CompletedDate" name="CompletedDate"
+              value="<%= book.CompletedDate %>" />
+          </div>
+        </div>
+      </div>
 
-        <button type="submit" class="btn btn-primary">Add Book</button>
-      </form>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="Completed" id="Completed" value="<%= book.Completed %>"
+          onclick="ToggleCompletedDate()" />
+        <label class="form-check-label" for="Completed" onclick="ToggleCompletedDate()">Completed</label>
+      </div>
 
-      <% }) %>
-    </div>
+      <button type="submit" class="btn btn-primary">Update Book</button>
+    </form>
 
-    <script>
-      function ToggleCompletedDate() {
-        if (document.querySelector("#Completed").checked)
-          document.querySelector("#completedDateDiv").style.display = "block";
-        else document.querySelector("#completedDateDiv").style.display = "none";
+    <% }) %>
+  </div>
+
+  <script>
+    if (document.querySelector("#Completed").value == "true") {
+      document.querySelector("#Completed").checked = true;
+      document.querySelector("#completedDateDiv").style.display = "block";
+    } else {
+      document.querySelector("#Completed").checked = false;
+      document.querySelector("#completedDateDiv").style.display = "none";
+      document.querySelector("#CompletedDate").value = "";
+    }
+
+    function ToggleCompletedDate() {
+      if (document.querySelector("#Completed").checked) {
+        document.querySelector("#Completed").value = true;
+        document.querySelector("#completedDateDiv").style.display = "block";
+      } else {
+        document.querySelector("#Completed").value = false;
+        document.querySelector("#completedDateDiv").style.display = "none";
+        document.querySelector("#CompletedDate").value = "";
       }
+    }
+  </script>
+</body>
 
-      // window.onload = () => {
-      //   console.log(this.filterBooks);
-      //   console.log(filterBooks);
-      // }
-    </script>
-  </body>
 </html>

@@ -3,9 +3,11 @@ const mongoose = require("mongoose");
 const BookSchema = new mongoose.Schema({
   BookName: { type: String, required: true, unique: true },
   Author: { type: String, required: true },
-  ReadStartDate: { type: Date, default: new Date().toString('yyyy-MM-dd hh:mm:ss') },
+  ReadStartDate: {
+    type: String
+  },
   Completed: { type: Boolean, default: false },
-  CompletedDate: { type: Date },
+  CompletedDate: { type: String }
 });
 
 const Book = mongoose.model("Book", BookSchema);

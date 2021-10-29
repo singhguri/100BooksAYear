@@ -21,8 +21,31 @@ app.set("view engine", "html");
 // app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser());
 
+const books = [
+  {
+    BookName: "Meluha",
+    Author: "Amish",
+  },
+  {
+    BookName: "Vayuputras",
+    Author: "Amish",
+  },
+  {
+    BookName: "Nagas",
+    Author: "Amish",
+  },
+  {
+    BookName: "ABC Murders",
+    Author: "Agatha Christie",
+  },
+];
+
+books.forEach((ind, ele) => {
+  console.log(ind, ele);
+});
+
 app.get("/", async (req, res) => {
-  const books = await Book.find({});
+  // const books = await Book.find({});
 
   res.render("book.ejs", { books });
 });
@@ -36,7 +59,8 @@ app.post("/", async (req, res) => {
   });
 
   try {
-    await book.save();
+    // await book.save();
+    books.push(book);
     res.redirect("/");
   } catch (err) {
     console.error(err);

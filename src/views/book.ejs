@@ -28,17 +28,17 @@
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
+            <th scope="col">Book Name</th>
+            <th scope="col">Author</th>
             <th scope="col">Handle</th>
           </tr>
         </thead>
         <tbody>
-          <% books.forEach(book => { %>
+          <% books.forEach((book, index) => { %>
           <tr>
-            <th>1</th>
+            <th><%= (index+1) %></th>
             <td><%= book.BookName %></td>
-            <td></td>
+            <td><%= book.Author %></td>
             <td></td>
           </tr>
           <% }) %>

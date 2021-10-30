@@ -1,5 +1,5 @@
-module.exports = (app, Book) => {
-  app.get("/", async (req, res) => {
+module.exports = (app, Book, userId) => {
+  app.get("/books", async (req, res) => {
     const books = await Book.find({});
 
     books.filter((x) => {
@@ -9,7 +9,7 @@ module.exports = (app, Book) => {
     res.render("book.ejs", { books });
   });
 
-  app.post("/", async (req, res) => {
+  app.post("/books", async (req, res) => {
     const book = new Book({
       BookName: req.body.BookName,
       Author: req.body.Author,
@@ -20,15 +20,15 @@ module.exports = (app, Book) => {
 
     try {
       await book.save();
-      res.redirect("/");
+      res.redirect("/books");
     } catch (err) {
       console.error(err);
-      res.redirect("/");
+      res.redirect("/books");
     }
   });
 
   app
-    .route("/edit/:id")
+    .route("/books/edit/:id")
     .get((req, res) => {
       const book = Book.find({ _id: req.params.id }, (err, filteredBooks) => {
         if (filteredBooks[0].ReadStartDate.includes("Z"))
@@ -51,16 +51,16 @@ module.exports = (app, Book) => {
         Book.findByIdAndUpdate(req.params.id, filteredBooks[0], (err) => {
           if (err) return res.send(500, err);
         });
-        res.redirect("/");
+        res.redirect("/books");
       });
     });
 
-  app.route("/remove/:id").get(async (req, res) => {
+  app.route("/books/remove/:id").get(async (req, res) => {
     try {
       await Book.findByIdAndRemove(req.params.id);
     } catch (err) {
       console.log(err);
     }
-    res.redirect("/");
+    res.redirect("/books");
   });
 };

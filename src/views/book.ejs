@@ -96,10 +96,13 @@
           <td></td>
           <% } %>
           <td>
+          <% if (!book.Completed) { %>
             <button class="btn btn-primary btn-sm" onclick='Edit("<%= book._id%>")'>Edit</button>
-            <button class="btn btn-danger btn-sm" onclick='Delete("<%= book._id %>")'>
+            <% } else { %>
+             <button class="btn btn-danger btn-sm" style='display:"none"' onclick='Delete("<%= book._id %>")'>
               Delete
             </button>
+          <% } %>
           </td>
         </tr>
         <% }) %>

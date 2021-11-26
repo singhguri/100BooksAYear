@@ -1,6 +1,26 @@
+const jwt = require("jsonwebtoken");
+
 module.exports = (app, Book) => {
+  const JWT_SECRET = process.env.JWT_SECRET;
+
+  const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (token === null)
+      return res
+        .status(401)
+        .json({ respStatus: false, respMsg: "Not Authorized" });
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+      if (err) return res.status(401).json({ respStatus: false, respMsg: err });
+      req.user = user;
+      next();
+    });
+  };
+
   // get all books
-  app.get("/book/all", async (req, res) => {
+  app.get("/book/all", authenticateToken, async (req, res) => {
     try {
       const books = await Book.find({});
 
@@ -16,7 +36,7 @@ module.exports = (app, Book) => {
   });
 
   // add book
-  app.post("/book/add", async (req, res) => {
+  app.post("/book/add", authenticateToken, async (req, res) => {
     const book = new Book({
       BookName: req.body.BookName,
       Author: req.body.Author,
@@ -35,7 +55,7 @@ module.exports = (app, Book) => {
   });
 
   // get book by id
-  app.get("/book/:id", async (req, res) => {
+  app.get("/book/:id", authenticateToken, async (req, res) => {
     try {
       const book = await Book.find({ _id: req.params.id });
       res.status(200).json({ respStatus: true, respMsg: book });
@@ -45,7 +65,7 @@ module.exports = (app, Book) => {
   });
 
   // update a book
-  app.route("/book/edit/:id").get(async (req, res) => {
+  app.post("/book/edit/:id", authenticateToken, async (req, res) => {
     try {
       await Book.findByIdAndUpdate(req.params.id, req.body, (err) => {
         if (err) return res.send(500).json({ respStatus: false, respMsg: err });
@@ -59,7 +79,7 @@ module.exports = (app, Book) => {
   });
 
   // delete a book
-  app.route("/book/remove/:id").get(async (req, res) => {
+  app.get("/book/remove/:id", authenticateToken, async (req, res) => {
     try {
       await Book.findByIdAndRemove(req.params.id);
     } catch (err) {

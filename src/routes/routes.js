@@ -1,66 +1,73 @@
 module.exports = (app, Book) => {
-  app.get("/", async (req, res) => {
-    const books = await Book.find({});
+  // get all books
+  app.get("/book/all", async (req, res) => {
+    try {
+      const books = await Book.find({});
 
-    books.filter((x) => {
-      x.ReadStartDate = x.ReadStartDate.replace("T", " ");
-      x.CompletedDate = x.CompletedDate.replace("T", " ");
-    });
-    res.render("book.ejs", { books });
+      books.filter((x) => {
+        x.ReadStartDate = x.ReadStartDate.replace("T", " ");
+        x.CompletedDate = x.CompletedDate.replace("T", " ");
+      });
+
+      res.status(200).json({ respStatus: true, respMsg: books });
+    } catch (err) {
+      res.status(500).json({ respStatus: false, respMsg: err });
+    }
   });
 
-  app.post("/", async (req, res) => {
+  // add book
+  app.post("/book/add", async (req, res) => {
     const book = new Book({
       BookName: req.body.BookName,
       Author: req.body.Author,
       ReadStartDate: req.body.ReadStartDate,
       Completed: req.body.Completed == "on" ? true : false,
-      CompletedDate: req.body.CompletedDate
+      CompletedDate: req.body.CompletedDate,
     });
 
     try {
       await book.save();
-      res.redirect("/");
+      res.status(201).send({ respStatus: true, respMsg: book });
     } catch (err) {
       console.error(err);
-      res.redirect("/");
+      res.status(500).json({ respStatus: false, respMsg: err });
     }
   });
 
-  app
-    .route("/edit/:id")
-    .get((req, res) => {
-      const book = Book.find({ _id: req.params.id }, (err, filteredBooks) => {
-        if (filteredBooks[0].ReadStartDate.includes("Z"))
-          filteredBooks[0].ReadStartDate =
-            filteredBooks[0].ReadStartDate.split(".")[0];
-        res.render("bookEdit.ejs", { filteredBooks });
+  // get book by id
+  app.get("/book/:id", async (req, res) => {
+    try {
+      const book = await Book.find({ _id: req.params.id });
+      res.status(200).json({ respStatus: true, respMsg: book });
+    } catch (err) {
+      res.status(500).json({ respStatus: false, respMsg: err });
+    }
+  });
+
+  // update a book
+  app.route("/book/edit/:id").get(async (req, res) => {
+    try {
+      await Book.findByIdAndUpdate(req.params.id, req.body, (err) => {
+        if (err) return res.send(500).json({ respStatus: false, respMsg: err });
       });
-    })
-    .post((req, res) => {
-      const book = Book.find({ _id: req.params.id }, (err, filteredBooks) => {
-        if (filteredBooks[0].ReadStartDate.includes("Z"))
-          filteredBooks[0].ReadStartDate =
-            filteredBooks[0].ReadStartDate.split(".")[0];
+      res
+        .status(200)
+        .json({ respStatus: true, respMsg: "Book updated successfully." });
+    } catch (error) {
+      res.status(500).json({ respStatus: false, respMsg: error });
+    }
+  });
 
-        // console.log(req.body, filteredBooks[0]);
-        filteredBooks[0].Completed =
-          req.body.Completed == "true" ? true : false;
-        filteredBooks[0].CompletedDate = req.body.CompletedDate;
-
-        Book.findByIdAndUpdate(req.params.id, filteredBooks[0], (err) => {
-          if (err) return res.send(500, err);
-        });
-        res.redirect("/");
-      });
-    });
-
-  app.route("/remove/:id").get(async (req, res) => {
+  // delete a book
+  app.route("/book/remove/:id").get(async (req, res) => {
     try {
       await Book.findByIdAndRemove(req.params.id);
     } catch (err) {
       console.log(err);
+      res.status(500).json({ respStatus: false, respMsg: err });
     }
-    res.redirect("/");
+    res
+      .status(204)
+      .json({ respStatus: true, respMsg: "Book removed successfully." });
   });
 };
